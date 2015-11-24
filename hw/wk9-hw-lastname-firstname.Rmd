@@ -1,7 +1,7 @@
 ---
 title: "wk9-homework-lastname-firstname"
-author: "Steele H. Valenzuela"
-date: "November 16, 2015"
+author: "Lin Chen"
+date: "November 23, 2015"
 output: html_document
 ---
 
@@ -18,22 +18,74 @@ b. Re-save this file with your last and first name as well as altering the title
 #### 2. if-then-else
 Create a function `is.a.number()` that takes a single parameter `X` and returns `"Is a number"` if it is a number, `"Is NA"` if it is an `NA` value, and `"I have no clue"` if it is neither a number nor an `NA` value. Use the `is.na()` and `is.numeric()` functions.
 
-
+```{r}
+is.a.number<-function(x) {
+    y<-"I have no clue"
+    if (is.numeric(x)) {
+      y<-"Is a number"}
+    if (is.na(x)) {
+      y<-"NA"}
+    return(y)
+}
+```
 
 #### 3. primes 
 Create a function that when inputting a single prime number between 3 and 100, it will output a `TRUE` or `FALSE` in a `message()`. Insert an error message as if somebody were to insert a number less than 3, greater than 100, or a non-numeric character. (*Please don't insert all of the prime numbers between 3 and 100 into the function...*)
 
+```{r}
+number.range.check<-function(x) {
+  if (x<3 | x>100| is.character(x)) {
+    message("ERROR!")
+  } else {
+    if (x>=3 & x<=100) {
+      message("TRUE")
+    } else {
+      message("FALSE")
+    }
+    }
+}
+```
 
 
 #### 4. ggplot2
 
 a. Using `ggplot2`, create a function that when inputting a single continuous variable, it will print out a histogram. Include arguments to alter the theme, x-variable label, a title, and a `TRUE` or `FALSE` option to create a density plot.
 
-
+```{r}
+histo.function<-function(data,theme1,xlab1,title1,densityoption) {
+  library(ggplot2)
+  length<-seq(1,length(data))
+  df<-data.frame(data,length)
+  m<-ggplot(df,aes(x=data))+geom_histogram()+labs(title=title1,x=xlab1)
+  if (densityoption) {
+    m<-m+geom_density()
+  }
+  if (theme1) {
+    m<-m+theme_classic()
+  }
+  return(m)
+}
+```
 
 
 b. Similarly, create a function that when inputting two continuous variables, it will print a scatterplot. Additionally, in the console, print the mean and variance of the two variables as well as the coefficient value of the specified x-variable.  Include arguments to alter the title and a `TRUE` or `FALSE` option to include a smoothing method of *lm* aka a simple linear model line in/on the scatterplot.
 
+```{r}
+histo2.function<-function(data1,data2,title1,smoothingoption) {
+  library(ggplot2)
+  df<-data.frame(data1,data2)
+  m<-ggplot(df,aes(x=data1,y=data2))+geom_point()+labs(title=title1)
+  mean1<-mean(data1)
+  mean2<-mean(data2)
+  var1<-var(data1)
+  var2<-var(data2)
+  coeffi<-coef(data1~data2)
+  if (smoothingoption) {
+    m<-m+geom_smooth()
+  }
+  return(list(m,"mean of data 1=",mean1, ";","mean of data 2=", mean2,";","variance of data1=",var1,";","variance of data2=", var2, ";","coefficient value of the specified x-variables=", coeffi))
+}
+```
 
 #### 5. Remaining GitHub workflow
 
